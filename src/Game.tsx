@@ -1,7 +1,16 @@
 import { Board } from "./Board";
-import React from "react";
+import React, {Component, PropsWithChildren} from "react";
 
-export class Game extends React.Component {
+interface GameProps extends PropsWithChildren<any> {
+
+}
+
+interface GameState {
+  history: [{ squares: Array<string>}],
+  xIsNext: boolean,
+}
+
+export class Game extends Component<GameProps, GameState> {
   render() {
     return (
       <div className="game">
@@ -16,4 +25,3 @@ export class Game extends React.Component {
     );
   }
 }
-

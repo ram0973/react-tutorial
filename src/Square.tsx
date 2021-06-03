@@ -1,15 +1,23 @@
-import React from "react";
+import React, {Component, PropsWithChildren} from "react";
 
-type SquareProps = {
-  value: string
+interface SquareProps extends PropsWithChildren<any>{
+  value: string,
 }
 
-export class Square extends React.Component<SquareProps> {
+interface SquareState {
+}
+
+export class Square extends Component<SquareProps, SquareState> {
+  constructor(props: SquareProps) {
+    super(props);
+    this.state = {
+      value: null
+    }
+  }
+
   render() {
     return (
-      <button className="square" onClick={() => {
-        alert('click');
-      }}>
+      <button className="square" onClick={this.props.onClick}>
         {this.props.value}
       </button>
     );

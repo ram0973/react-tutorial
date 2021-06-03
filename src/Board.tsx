@@ -1,27 +1,77 @@
-import React from "react";
+import React, {Component, PropsWithChildren} from "react";
 import { Square } from "./Square";
 
-type BoardProps = {
-
+interface BoardProps extends PropsWithChildren<any>{
 }
 
-type BoardState = {
-  status: string
+interface BoardState extends PropsWithChildren<any> {
+  squares: string[],
+  xIsNext: boolean
 }
 
-export class Board extends React.Component<BoardProps, BoardState> {
-  state: BoardState = { status: 'Next player: X'};
+export class Board extends Component<BoardProps, BoardState> {
+
+  constructor(props: BoardState) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+      xIsNext: true,
+    }
+  }
+
+  handleClick(i: number) {
+    const squares = this.state.squares.slice();
+    if (this.calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+
+  calculateWinner(squares: string[]) {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        return squares[a];
+      }
+    }
+    return null;
+  }
 
   renderSquare(i: number) {
     return (
-      <Square value={ i.toString() }/>
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
     );
   }
 
   render() {
+    const winner = this.calculateWinner(this.state.squares);
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
+
     return (
       <div>
-        <div className="status">{ this.state.status }</div>
+        <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
