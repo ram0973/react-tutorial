@@ -1,15 +1,12 @@
-import React, {Component, PropsWithChildren} from "react";
+import React, {Component} from "react";
 import { Square } from "./Square";
 
-interface BoardProps extends PropsWithChildren<any>{
-}
-
-interface BoardState extends PropsWithChildren<any> {
+interface BoardState {
   squares: string[],
   xIsNext: boolean
 }
 
-export class Board extends Component<BoardProps, BoardState> {
+export class Board extends Component<{},  BoardState> {
 
   constructor(props: BoardState) {
     super(props);

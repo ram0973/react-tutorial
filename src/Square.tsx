@@ -1,13 +1,10 @@
-import React, {Component, PropsWithChildren} from "react";
+import React, {Component, ComponentProps} from "react";
 
-interface SquareProps extends PropsWithChildren<any>{
+interface SquareProps extends ComponentProps<"button"> {
   value: string,
 }
 
-interface SquareState {
-}
-
-export class Square extends Component<SquareProps, SquareState> {
+export class Square extends Component<SquareProps, {}> {
   constructor(props: SquareProps) {
     super(props);
     this.state = {
